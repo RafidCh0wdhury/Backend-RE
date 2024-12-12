@@ -164,7 +164,7 @@ exports.getMyList = async (req, res) => {
       include: [
         {
           model: Resource,
-          attributes: ["resourceName", "resourceClass", "resourcePath"], // Specify the fields you want from the User model
+          attributes: ["resourceName", "resourceClass", "resourcePath", "tags"], // Specify the fields you want from the User model
         },
       ],
     });
@@ -206,7 +206,7 @@ exports.fetchAllCounts = async (req, res) => {
       },
     });
 
-    const allClasses = ["CIT 160", "IS 144"];
+    const allClasses = ["CIT", "IS"];
 
     const resourcesByClass = await Resource.findAll({
       where: {
@@ -248,4 +248,19 @@ exports.fetchAllCounts = async (req, res) => {
   }
 };
 
-exports.deleteFromList = async (req, res) => {};
+exports.deleteFromList = async (req, res) => {
+  const id = req.params.resourceId;
+  await MyList.destroy({
+    where: {
+      id: id,
+    },
+  })
+    .then((result) =>
+      res
+        .send({ message: "Resource deleted from your list successfully!" })
+        .status(200)
+    )
+    .catch((err) =>
+      res.send({ message: "Resource couldn't be deleted!" }).status(404)
+    );
+};

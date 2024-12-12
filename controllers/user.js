@@ -40,7 +40,7 @@ exports.login = async (req, res, next) => {
 };
 
 exports.signup = async (req, res, next) => {
-  const { email, password, name, major } = req.body; //req er body r modhe data pathai server ke
+  const { email, password, name, major } = req.body;
   const existingUser = await User.findOne({
     where: {
       email,
@@ -55,7 +55,7 @@ exports.signup = async (req, res, next) => {
   if (!hashedPassword) {
     return res
       .send("Something went wrong while saving password to database.")
-      .status(500); //500 internet sernal server error
+      .status(500); //500 internet server error
   }
   const newUser = await User.create({
     email,
